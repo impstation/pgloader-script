@@ -4,8 +4,8 @@
 -- https://www.postgresql.org/docs/current/datatype.html
 
 LOAD DATABASE
-    FROM sqlite://preferences.db
-    INTO postgresql://postgres:@localhost:5432/ss14
+    FROM sqlite:///root/backup/server/preferences-stripped-toload.db
+    INTO postgresql://postgres:@localhost:5432/ss14_staging
 
 
 WITH
