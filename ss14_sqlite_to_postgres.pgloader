@@ -44,6 +44,7 @@ column admin_flag.negative to boolean,
 column admin_flag.admin_id to uuid,
 
 column admin_log.date to timestamptz using sqlite-timestamp-to-timestamp,
+column admin_log.json to jsonb,
 column admin_log.impact to smallint,
 
 column admin_log_player.player_user_id to uuid,
@@ -141,6 +142,7 @@ column preference.user_id to uuid,
 
 -- column profile.profile_id to serial,
 column profile.profile_id to integer,
+column profile.markings to jsonb,
 
 -- column profile_loadout.profile_loadout_id to serial,
 column profile_loadout.profile_loadout_id to integer,
