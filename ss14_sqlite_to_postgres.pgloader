@@ -20,7 +20,11 @@ WITH
     -- pre-existing constraints not created by pgloader
     disable triggers,
     -- set postgres sequences to appropriate ids
-    reset sequences
+    reset sequences,
+    -- this seems to fix a "heap exhausted" error
+    -- see here https://github.com/dimitri/pgloader/issues/962#issuecomment-490258129
+    -- default 100000
+    prefetch rows = 25000
 
 
 -- sqlite types all bogstandard INTEGER, TEXT
