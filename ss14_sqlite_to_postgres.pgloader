@@ -9,11 +9,16 @@ LOAD DATABASE
 
 
 WITH
-    -- don't drop or create tables, the server application creates them
+    -- don't drop or create tables, the server application creates them first
     include no drop, create no tables,
     create no indexes, no foreign keys,
     -- remove any rows created by running the server application
     truncate,
+    -- disables foreign key checking while loading the data,
+    -- then re-enables it afterwards.
+    -- enables data to be loaded into tables with
+    -- pre-existing constraints not created by pgloader
+    disable triggers,
     -- set postgres sequences to appropriate ids
     reset sequences
 
