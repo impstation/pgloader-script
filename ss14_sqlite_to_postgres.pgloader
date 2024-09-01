@@ -1,7 +1,18 @@
+-- Before running this, you have to do this query on the source sqlite database:
+
+-- `UPDATE profile SET markings =  CAST(markings AS TEXT);`
+
+-- This fixes copying the json over, because jsonb is a different format entirely in sqlite.
+-- Note that you can write pgloader scripts to run queries on the target database before starting,
+-- but not to run queries on the source database, so you have to do this manually.
+
+
 -- references:
 -- https://pgloader.readthedocs.io/en/latest/ref/sqlite.html
+-- https://pgloader.readthedocs.io/en/latest/command.html
 -- https://www.sqlite.org/datatype3.html
 -- https://www.postgresql.org/docs/current/datatype.html
+
 
 LOAD DATABASE
     FROM {{SQLITEPATH}}
