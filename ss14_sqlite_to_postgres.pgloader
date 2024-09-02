@@ -31,7 +31,10 @@ WITH
     -- pre-existing constraints not created by pgloader
     disable triggers,
     -- set postgres sequences to appropriate ids
-    reset sequences,
+    -- this actually doesn't work because pgloader only
+    -- does this for sequences it creates.
+    -- so we do this manually with AFTER LOAD DO
+    -- reset sequences,
     -- this seems to fix a "heap exhausted" error
     -- see here https://github.com/dimitri/pgloader/issues/962#issuecomment-490258129
     -- default 100000
@@ -234,4 +237,34 @@ CAST
     -- "the first match prevents following rules to be applied"
     -- https://pgloader.readthedocs.io/en/latest/ref/pgsql.html#postgresql-database-casting-rules
     type integer to integer using integer-to-string
+
+
+AFTER LOAD DO
+    $$ SELECT setval('admin_flag_admin_flag_id_seq', (SELECT GREATEST(MAX(admin_flag_id), 1) FROM admin_flag)); $$,
+    $$ SELECT setval('admin_messages_admin_messages_id_seq', (SELECT GREATEST(MAX(admin_messages_id), 1) FROM admin_messages)); $$,
+    $$ SELECT setval('admin_notes_admin_notes_id_seq', (SELECT GREATEST(MAX(admin_notes_id), 1) FROM admin_notes)); $$,
+    $$ SELECT setval('admin_rank_admin_rank_id_seq', (SELECT GREATEST(MAX(admin_rank_id), 1) FROM admin_rank)); $$,
+    $$ SELECT setval('admin_rank_flag_admin_rank_flag_id_seq', (SELECT GREATEST(MAX(admin_rank_flag_id), 1) FROM admin_rank_flag)); $$,
+    $$ SELECT setval('admin_watchlists_admin_watchlists_id_seq', (SELECT GREATEST(MAX(admin_watchlists_id), 1) FROM admin_watchlists)); $$,
+    $$ SELECT setval('antag_antag_id_seq', (SELECT GREATEST(MAX(antag_id), 1) FROM antag)); $$,
+    $$ SELECT setval('assigned_user_id_assigned_user_id_id_seq', (SELECT GREATEST(MAX(assigned_user_id_id), 1) FROM assigned_user_id)); $$,
+    $$ SELECT setval('ban_template_ban_template_id_seq', (SELECT GREATEST(MAX(ban_template_id), 1) FROM ban_template)); $$,
+    $$ SELECT setval('connection_log_connection_log_id_seq', (SELECT GREATEST(MAX(connection_log_id), 1) FROM connection_log)); $$,
+    $$ SELECT setval('job_job_id_seq', (SELECT GREATEST(MAX(job_id), 1) FROM job)); $$,
+    $$ SELECT setval('play_time_play_time_id_seq', (SELECT GREATEST(MAX(play_time_id), 1) FROM play_time)); $$,
+    $$ SELECT setval('player_player_id_seq', (SELECT GREATEST(MAX(player_id), 1) FROM player)); $$,
+    $$ SELECT setval('preference_preference_id_seq', (SELECT GREATEST(MAX(preference_id), 1) FROM preference)); $$,
+    $$ SELECT setval('profile_loadout_group_profile_loadout_group_id_seq', (SELECT GREATEST(MAX(profile_loadout_group_id), 1) FROM profile_loadout_group)); $$,
+    $$ SELECT setval('profile_loadout_profile_loadout_id_seq', (SELECT GREATEST(MAX(profile_loadout_id), 1) FROM profile_loadout)); $$,
+    $$ SELECT setval('profile_profile_id_seq', (SELECT GREATEST(MAX(profile_id), 1) FROM profile)); $$,
+    $$ SELECT setval('profile_role_loadout_profile_role_loadout_id_seq', (SELECT GREATEST(MAX(profile_role_loadout_id), 1) FROM profile_role_loadout)); $$,
+    $$ SELECT setval('round_round_id_seq', (SELECT GREATEST(MAX(round_id), 1) FROM round)); $$,
+    $$ SELECT setval('server_ban_hit_server_ban_hit_id_seq', (SELECT GREATEST(MAX(server_ban_hit_id), 1) FROM server_ban_hit)); $$,
+    $$ SELECT setval('server_ban_server_ban_id_seq', (SELECT GREATEST(MAX(server_ban_id), 1) FROM server_ban)); $$,
+    $$ SELECT setval('server_role_ban_server_role_ban_id_seq', (SELECT GREATEST(MAX(server_role_ban_id), 1) FROM server_role_ban)); $$,
+    $$ SELECT setval('server_role_unban_role_unban_id_seq', (SELECT GREATEST(MAX(role_unban_id), 1) FROM server_role_unban)); $$,
+    $$ SELECT setval('server_server_id_seq', (SELECT GREATEST(MAX(server_id), 1) FROM server)); $$,
+    $$ SELECT setval('server_unban_unban_id_seq', (SELECT GREATEST(MAX(unban_id), 1) FROM server_unban)); $$,
+    $$ SELECT setval('trait_trait_id_seq', (SELECT GREATEST(MAX(trait_id), 1) FROM trait)); $$,
+    $$ SELECT setval('uploaded_resource_log_uploaded_resource_log_id_seq', (SELECT GREATEST(MAX(uploaded_resource_log_id), 1) FROM uploaded_resource_log)); $$
 ;

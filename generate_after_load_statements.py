@@ -11,14 +11,12 @@ def generate(tables: list[str]):
     )
 
 
-# you can generate this from the output of psql's \dt with this regex:
-# public \|\W*(\w+)\W*\| table \| .+
-# "$1",
+# you can generate these like so:
+# SELECT table_name FROM information_schema.columns WHERE column_name = table_name || '_id' ORDER BY table_name;
+# then double check the output
 tables = [
-    "admin",
     "admin_flag",
     "admin_log",
-    "admin_log_player",
     "admin_messages",
     "admin_notes",
     "admin_rank",
@@ -31,24 +29,18 @@ tables = [
     "job",
     "play_time",
     "player",
-    "player_round",
     "preference",
     "profile",
     "profile_loadout",
     "profile_loadout_group",
     "profile_role_loadout",
-    "role_whitelists",
     "round",
     "server",
     "server_ban",
-    "server_ban_exemption",
     "server_ban_hit",
     "server_role_ban",
-    "server_role_unban",
-    "server_unban",
     "trait",
     "uploaded_resource_log",
-    "whitelist",
 ]
 
 if __name__ == "__main__":
