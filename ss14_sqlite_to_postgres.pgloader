@@ -7,7 +7,7 @@
 -- but not to run queries on the source database, so you have to do this manually.
 
 -- You can also truncate admin_log and admin_log_player in the sqlite,
--- since they make up 99% of the date so you'll save a lot of time
+-- since they make up 99% of the data so you'll save a lot of time,
 -- and long log messages can cause a weird error with
 -- "word is too long to be indexed"
 -- which I haven't been able to figure out.
