@@ -1,10 +1,18 @@
 -- Before running this, you have to do this query on the source sqlite database:
 
--- `UPDATE profile SET markings =  CAST(markings AS TEXT);`
+-- `UPDATE profile SET markings = CAST(markings AS TEXT);`
 
 -- This fixes copying the json over, because jsonb is a different format entirely in sqlite.
 -- Note that you can write pgloader scripts to run queries on the target database before starting,
 -- but not to run queries on the source database, so you have to do this manually.
+
+-- You can also truncate admin_log and admin_log_player in the sqlite,
+-- since they make up 99% of the date so you'll save a lot of time
+-- and long log messages can cause a weird error with
+-- "word is too long to be indexed"
+-- which I haven't been able to figure out.
+
+-- `DELETE FROM admin_log; DELETE FROM admin_log_player;`
 
 
 -- references:
@@ -239,6 +247,9 @@ CAST
     type integer to integer using integer-to-string
 
 
+-- reset existing sequences
+-- you can see how pgloader does it here:
+-- https://github.com/dimitri/pgloader/blob/29afa9de0563b25bf2da3a9b2d84e2b1b25de098/src/pgsql/pgsql-create-schema.lisp#L381
 AFTER LOAD DO
     $$ SELECT setval('admin_flag_admin_flag_id_seq', (SELECT GREATEST(MAX(admin_flag_id), 1) FROM admin_flag)); $$,
     $$ SELECT setval('admin_messages_admin_messages_id_seq', (SELECT GREATEST(MAX(admin_messages_id), 1) FROM admin_messages)); $$,
